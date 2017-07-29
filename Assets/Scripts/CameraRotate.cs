@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KeyboardControl : MonoBehaviour {
+public class CameraRotate : MonoBehaviour {
 
     public Transform DirectionalTransformToUse;
     public Rigidbody RigidbodyToUse;
@@ -39,5 +39,20 @@ public class KeyboardControl : MonoBehaviour {
         if (canJump && Input.GetButtonDown("Jump")) {
             RigidbodyToUse.AddForce(-JumpForce * gravityVulnerable.CurrentDown, ForceMode.VelocityChange);
         }
+    }
+
+    void OnDrawGizmos() {
+        if (!DirectionalTransformToUse) return;
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawLine(transform.position, transform.position + 5 * DirectionalTransformToUse.forward);
+        Gizmos.DrawWireSphere(transform.position + 5 * DirectionalTransformToUse.forward, 0.25f);
+        var right = DirectionalTransformToUse.right;
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawLine(transform.position, transform.position + 5 * right);
+        Gizmos.DrawWireSphere(transform.position + 5 * right, 0.25f);
+        var forward = Vector3.Cross(gravityVulnerable.CurrentDown, right).normalized;
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(transform.position, transform.position + 5 * forward);
+        Gizmos.DrawWireSphere(transform.position + 5 * forward, 0.25f);
     }
 }

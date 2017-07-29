@@ -12,7 +12,7 @@ public class GravityObject : MonoBehaviour {
         AllInCurrentScene.Add(this);
     }
 
-    public void OnDestroy() {
+    void OnDestroy() {
         AllInCurrentScene.Remove(this);
     }
 }

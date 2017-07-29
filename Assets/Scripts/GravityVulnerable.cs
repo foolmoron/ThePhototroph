@@ -8,6 +8,7 @@ public class GravityVulnerable : MonoBehaviour {
     public float GravityModifier = 1;
 
     public GravityObject CurrentNearestGravityObject;
+    public Vector3 CurrentDown = Vector3.down;
 
     void Start() {
         if (!RigidbodyToUse) {
@@ -15,7 +16,7 @@ public class GravityVulnerable : MonoBehaviour {
         }
     }
 
-    void Update() {
+    void FixedUpdate() {
         CurrentNearestGravityObject = null;
         var nearestR2 = float.PositiveInfinity;
         foreach (var gravityObject in GravityObject.AllInCurrentScene) {
@@ -32,6 +33,9 @@ public class GravityVulnerable : MonoBehaviour {
                 CurrentNearestGravityObject = gravityObject;
                 nearestR2 = r2;
             }
+        }
+        if (CurrentNearestGravityObject != null) {
+            CurrentDown = (CurrentNearestGravityObject.transform.position - transform.position).normalized;
         }
     }
 }
