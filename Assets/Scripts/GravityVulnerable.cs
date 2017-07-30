@@ -9,6 +9,7 @@ public class GravityVulnerable : MonoBehaviour {
 
     public GravityObject CurrentNearestGravityObject;
     public Vector3 CurrentDown = Vector3.down;
+    public float CurrentDistanceToGravity;
 
     void Start() {
         if (!RigidbodyToUse) {
@@ -25,7 +26,7 @@ public class GravityVulnerable : MonoBehaviour {
             var dir = vectorToGravity.normalized;
             var r2 = vectorToGravity.sqrMagnitude;
             var a = GravityModifier * gravityObject.GravitationalMass / r2;
-            var radiusScale = Mathf.Clamp01(r2 - (gravityObject.MinRadius * gravityObject.MinRadius));
+            var radiusScale = Mathf.Clamp01(r2 - (gravityObject.Radius * gravityObject.Radius));
             RigidbodyToUse.AddForce(a * radiusScale * dir, ForceMode.Acceleration);
 
             // check for nearest object
@@ -36,6 +37,7 @@ public class GravityVulnerable : MonoBehaviour {
         }
         if (CurrentNearestGravityObject != null) {
             CurrentDown = (CurrentNearestGravityObject.transform.position - transform.position).normalized;
+            CurrentDistanceToGravity = (CurrentNearestGravityObject.transform.position - transform.position).magnitude - CurrentNearestGravityObject.Radius;
         }
     }
 }

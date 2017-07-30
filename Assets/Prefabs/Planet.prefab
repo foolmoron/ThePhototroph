@@ -137,7 +137,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GravitationalMass: 1000
-  MinRadius: 4.5
+  Radius: 4.5
+  MelodyId: 3
 --- !u!135 &135323617072765304
 SphereCollider:
   m_ObjectHideFlags: 1

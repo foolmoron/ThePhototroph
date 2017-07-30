@@ -16,10 +16,12 @@ public class KeyboardControl : MonoBehaviour {
     float gravityDiveHoldTime;
     public float DiveSpeed = 5;
     public bool IsDiving;
+    public bool IsJumping;
+
+    public float GravityMelodyDistanceMax = 50;
 
     Phototroph phototroph;
     GravityVulnerable gravityVulnerable;
-    SphereCollider collider;
     CameraEffects cameraEffects;
     
     void Start() {
@@ -31,7 +33,6 @@ public class KeyboardControl : MonoBehaviour {
         }
         phototroph = GetComponent<Phototroph>();
         gravityVulnerable = GetComponent<GravityVulnerable>();
-        collider = GetComponent<SphereCollider>();
         cameraEffects = GetComponentInChildren<CameraEffects>();
     }
 
@@ -41,6 +42,7 @@ public class KeyboardControl : MonoBehaviour {
             gravityDiveHoldTime += Time.deltaTime;
             if (gravityDiveHoldTime >= GravityDiveHoldTime) {
                 IsDiving = true;
+                IsJumping = false;
             }
         }
 
@@ -49,6 +51,7 @@ public class KeyboardControl : MonoBehaviour {
             var currentDownVelocity = Vector3.Project(RigidbodyToUse.velocity, gravityVulnerable.CurrentDown);
             RigidbodyToUse.AddForce(2*(-BaseJumpForce * gravityVulnerable.CurrentDown - currentDownVelocity), ForceMode.VelocityChange);
             gravityDisableTime = JumpGravityDisableTime;
+            IsJumping = true;
             phototroph.UseOrb();
         }
 
@@ -66,6 +69,13 @@ public class KeyboardControl : MonoBehaviour {
 
         // camera effects intensity
         cameraEffects.Intensity = gravityDiveHoldTime / 4;
+
+        // audio
+        var speed = RigidbodyToUse.velocity.magnitude;
+        AudioManager.Inst.Drums.Current = speed > 30 ? 4 : speed > 15 ? 3 : speed > 7 ? 2 : speed > 2 ? 1 : 0;
+        AudioManager.Inst.Synths.Current = IsDiving ? 2 : IsJumping ? 1 : 0;
+        AudioManager.Inst.Melodies.Current = gravityVulnerable.CurrentNearestGravityObject.MelodyId;
+        AudioManager.Inst.Melodies.MasterVolume = 1 - Mathf.Clamp01(gravityVulnerable.CurrentDistanceToGravity / GravityMelodyDistanceMax);
     }
 
     void FixedUpdate() {
@@ -86,6 +96,7 @@ public class KeyboardControl : MonoBehaviour {
     void OnCollisionStay(Collision collision) {
         // TODO: change to raycast for planet
         if (collision.transform.GetComponent<Planet>()) {
+            IsJumping = false;
             IsDiving = false;
             gravityDiveHoldTime = 0;
         }
