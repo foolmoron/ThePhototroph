@@ -142,18 +142,21 @@ MonoBehaviour:
     Current: 0
     Previous: 0
     Audios: []
+    Volumes: []
   Synths:
     FadeTime: 0.2
     MasterVolume: 1
     Current: 0
     Previous: 0
     Audios: []
+    Volumes: []
   Melodies:
     FadeTime: 0.5
     MasterVolume: 1
     Current: 0
     Previous: 0
     Audios: []
+    Volumes: []
 --- !u!4 &115846803
 Transform:
   m_ObjectHideFlags: 0
@@ -161,7 +164,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 115846801}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.03, y: 0.59, z: -6.64}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 160494504}

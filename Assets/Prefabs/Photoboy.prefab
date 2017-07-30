@@ -344,6 +344,11 @@ MonoBehaviour:
   GravityDiveHoldTime: 0.5
   DiveSpeed: 5
   IsDiving: 0
+  IsJumping: 0
+  GravityMelodyDistanceMax: 50
+  JumpSound: {fileID: 8300000, guid: fd20def96f9f56a4495dae9ef0f541cb, type: 3}
+  LandSound: {fileID: 8300000, guid: 770b7b16665d15d4e8f78e1d11c45123, type: 3}
+  DiveSound: {fileID: 8300000, guid: 17fd726e55fe0de439c51e78f2adc396, type: 3}
 --- !u!114 &114116030832578462
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -416,6 +421,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8fedf3e2ffc6a499a608b834ba5e1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CollectSound: {fileID: 8300000, guid: 8098bef12eca89749b71c717069230a1, type: 3}
+  FramesBetweenSound: 5
 --- !u!114 &114788784057797614
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -431,6 +438,7 @@ MonoBehaviour:
   GravityModifier: 1
   CurrentNearestGravityObject: {fileID: 0}
   CurrentDown: {x: 0, y: -1, z: 0}
+  CurrentDistanceToGravity: 0
 --- !u!124 &124089758998743778
 Behaviour:
   m_ObjectHideFlags: 1

@@ -9,14 +9,23 @@ public class CollectLight : MonoBehaviour {
 
     List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>(100);
 
+    public AudioClip CollectSound;
+    public int FramesBetweenSound = 5;
+    int frames;
+
     void Start() {
     }
 
-    void FixedUpdate() {
+    void Update() {
+        frames--;
     }
 
     void OnParticleCollision(GameObject other) {
         other.GetComponent<ParticleSystem>().GetCollisionEvents(other, collisionEvents);
         OnCollectLight(collisionEvents.Count);
+        if (frames <= 0) {
+            AudioSource.PlayClipAtPoint(CollectSound, Vector3.zero);
+            frames = FramesBetweenSound;
+        }
     }
 }

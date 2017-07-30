@@ -27,7 +27,7 @@ public class AudioManager : Manager<AudioManager> {
     };
 
     AudioPack[] audioPacks;
-
+    
     void Start() {
         Drums.Audios = transform.Find("Drums").GetComponentsInChildren<AudioSource>();
         Drums.Volumes = new float[Drums.Audios.Length];

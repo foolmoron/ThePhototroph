@@ -20,6 +20,10 @@ public class KeyboardControl : MonoBehaviour {
 
     public float GravityMelodyDistanceMax = 50;
 
+    public AudioClip JumpSound;
+    public AudioClip LandSound;
+    public AudioClip DiveSound;
+
     Phototroph phototroph;
     GravityVulnerable gravityVulnerable;
     CameraEffects cameraEffects;
@@ -41,6 +45,9 @@ public class KeyboardControl : MonoBehaviour {
         if (Input.GetButton("Jump")) {
             gravityDiveHoldTime += Time.deltaTime;
             if (gravityDiveHoldTime >= GravityDiveHoldTime) {
+                if (!IsDiving) {
+                    AudioSource.PlayClipAtPoint(DiveSound, Vector3.zero);
+                }
                 IsDiving = true;
                 IsJumping = false;
             }
@@ -53,6 +60,7 @@ public class KeyboardControl : MonoBehaviour {
             gravityDisableTime = JumpGravityDisableTime;
             IsJumping = true;
             phototroph.UseOrb();
+            AudioSource.PlayClipAtPoint(JumpSound, Vector3.zero);
         }
 
         // gravity disable
@@ -99,6 +107,7 @@ public class KeyboardControl : MonoBehaviour {
             IsJumping = false;
             IsDiving = false;
             gravityDiveHoldTime = 0;
+            //AudioSource.PlayClipAtPoint(LandSound, Vector3.zero);
         }
     }
 }
