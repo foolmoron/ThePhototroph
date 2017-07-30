@@ -32,7 +32,7 @@ public class Phototroph : MonoBehaviour {
     }
 
     void Update() {
-        var color = Color.HSVToRGB(OrbHueBase + OrbHueStep * Orbs.Count, OrbSat, OrbVal);
+        var color = Color.HSVToRGB((OrbHueBase + OrbHueStep * Orbs.Count) % 1, OrbSat, OrbVal);
         orbMaterial.SetColor("_EmissionColor", color);
     }
 

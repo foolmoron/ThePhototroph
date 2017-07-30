@@ -11,6 +11,8 @@ public class RotateToGravity : MonoBehaviour {
     KeyboardControl keyboardControl;
     Rigidbody rigidbody;
 
+    Vector3 prevVelocity = Vector3.forward;
+
     void Start() {
         gravityVulnerable = GetComponent<GravityVulnerable>();
         keyboardControl = GetComponent<KeyboardControl>();
@@ -18,7 +20,10 @@ public class RotateToGravity : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        var rotation = Quaternion.LookRotation(rigidbody.velocity, -gravityVulnerable.CurrentDown);
+        if (rigidbody.velocity != Vector3.zero) {
+            prevVelocity = rigidbody.velocity;
+        }
+        var rotation = Quaternion.LookRotation(prevVelocity, -gravityVulnerable.CurrentDown);
         rotation = Quaternion.Slerp(transform.rotation, rotation, RotateSpeed);
         transform.rotation = rotation;
     }

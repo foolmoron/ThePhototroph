@@ -81,7 +81,7 @@ MonoBehaviour:
     m_Settings:
       shutterAngle: 270
       sampleCount: 10
-      frameBlending: 0.28
+      frameBlending: 0.2
   eyeAdaptation:
     m_Enabled: 0
     m_Settings:
@@ -289,17 +289,17 @@ MonoBehaviour:
     m_Enabled: 0
     m_Settings:
       colored: 1
-      intensity: 0.771
-      size: 2.69
-      luminanceContribution: 0.726
+      intensity: 0
+      size: 1.55
+      luminanceContribution: 0
   vignette:
     m_Enabled: 0
     m_Settings:
       mode: 0
       color: {r: 0, g: 0, b: 0, a: 1}
       center: {x: 0.5, y: 0.5}
-      intensity: 0.471
-      smoothness: 0.144
+      intensity: 0.1
+      smoothness: 0.376
       roundness: 1
       mask: {fileID: 0}
       opacity: 1

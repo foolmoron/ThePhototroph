@@ -61,6 +61,8 @@ GameObject:
   - component: {fileID: 124089758998743778}
   - component: {fileID: 81856559233133184}
   - component: {fileID: 114025013270001478}
+  - component: {fileID: 114503946004937786}
+  - component: {fileID: 114697714140149156}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -346,6 +348,10 @@ MonoBehaviour:
   Acceleration: 10
   MaxSpeed: 20
   BaseJumpForce: 10
+  JumpGravityDisableTime: 1
+  GravityDiveHoldTime: 0.5
+  DiveSpeed: 5
+  IsDiving: 0
 --- !u!114 &114116030832578462
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -378,6 +384,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RotateSpeed: 0.0711
+--- !u!114 &114503946004937786
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1482437558923862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e052a490ee22cd47a0d52c1126f3d6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Shaking: 0
+  Strength: 0.05
+  FrameInterval: 1
+--- !u!114 &114697714140149156
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1482437558923862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424305f556b6f1e49816e5342218ed30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Intensity: 0
+  RealIntensity: 0
+  IntensitySpeed: 5
 --- !u!114 &114713309146435002
 MonoBehaviour:
   m_ObjectHideFlags: 1
