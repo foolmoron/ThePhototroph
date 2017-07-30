@@ -346,6 +346,11 @@ MonoBehaviour:
   IsDiving: 0
   IsJumping: 0
   GravityMelodyDistanceMax: 50
+  LandingMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  LandingSize: 0.6
+  IsLanded: 0
   JumpSound: {fileID: 8300000, guid: fd20def96f9f56a4495dae9ef0f541cb, type: 3}
   LandSound: {fileID: 8300000, guid: 770b7b16665d15d4e8f78e1d11c45123, type: 3}
   DiveSound: {fileID: 8300000, guid: 17fd726e55fe0de439c51e78f2adc396, type: 3}

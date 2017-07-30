@@ -16,9 +16,14 @@ public class KeyboardControl : MonoBehaviour {
     float gravityDiveHoldTime;
     public float DiveSpeed = 5;
     public bool IsDiving;
+    public bool IsHolding;
     public bool IsJumping;
 
     public float GravityMelodyDistanceMax = 50;
+
+    public LayerMask LandingMask;
+    public float LandingSize = 0.5f;
+    public bool IsLanded;
 
     public AudioClip JumpSound;
     public AudioClip LandSound;
@@ -49,13 +54,14 @@ public class KeyboardControl : MonoBehaviour {
                     AudioSource.PlayClipAtPoint(DiveSound, Vector3.zero);
                 }
                 IsDiving = true;
+                IsHolding = true;
                 IsJumping = false;
             }
         }
 
         // jump
-        if (phototroph.Orbs.Count > 0 && Input.GetButtonUp("Jump") && !IsDiving) {
-            var currentDownVelocity = Vector3.Project(RigidbodyToUse.velocity, gravityVulnerable.CurrentDown);
+        var currentDownVelocity = Vector3.Project(RigidbodyToUse.velocity, gravityVulnerable.CurrentDown);
+        if (phototroph.Orbs.Count > 0 && Input.GetButtonUp("Jump") && !IsDiving && !IsHolding) {
             RigidbodyToUse.AddForce(2*(-BaseJumpForce * gravityVulnerable.CurrentDown - currentDownVelocity), ForceMode.VelocityChange);
             gravityDisableTime = JumpGravityDisableTime;
             IsJumping = true;
@@ -73,6 +79,23 @@ public class KeyboardControl : MonoBehaviour {
         if (!Input.GetButton("Jump")) {
             IsDiving = false;
             gravityDiveHoldTime = 0;
+        }
+        if (Input.GetButtonDown("Jump")) {
+            IsHolding = false;
+        }
+
+        // test for landing
+        if (Physics.Raycast(transform.position, gravityVulnerable.CurrentDown, LandingSize, LandingMask)) {
+            if (!IsLanded) {
+                var landingVolume = Mathf.Pow(Mathf.Clamp01(currentDownVelocity.magnitude / 20), 2);
+                AudioSource.PlayClipAtPoint(LandSound, Vector3.zero, landingVolume);
+            }
+            IsLanded = true;
+            IsJumping = false;
+            IsDiving = false;
+            gravityDiveHoldTime = 0;
+        } else {
+            IsLanded = false;
         }
 
         // camera effects intensity
@@ -98,16 +121,6 @@ public class KeyboardControl : MonoBehaviour {
             if (RigidbodyToUse.velocity.magnitude < MaxSpeed) {
                 RigidbodyToUse.AddForce(direction * Acceleration, ForceMode.Acceleration);
             }
-        }
-    }
-
-    void OnCollisionStay(Collision collision) {
-        // TODO: change to raycast for planet
-        if (collision.transform.GetComponent<Planet>()) {
-            IsJumping = false;
-            IsDiving = false;
-            gravityDiveHoldTime = 0;
-            //AudioSource.PlayClipAtPoint(LandSound, Vector3.zero);
         }
     }
 }
