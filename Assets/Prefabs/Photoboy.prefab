@@ -372,6 +372,7 @@ MonoBehaviour:
   OrbSat: 0.65
   OrbVal: 1.5
   Orbs: []
+  FlashDuration: 0.5
 --- !u!114 &114188365886806518
 MonoBehaviour:
   m_ObjectHideFlags: 1

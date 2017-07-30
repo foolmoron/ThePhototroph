@@ -25,10 +25,19 @@ public class Phototroph : MonoBehaviour {
     Rigidbody jointRigidbody;
     Material orbMaterial;
 
+    [Range(0, 2)]
+    public float FlashDuration = 0.3f;
+    Material skyboxMaterial;
+    Color skyboxNoise1Original;
+    Color skyboxNoise2Original;
+
     void Start() {
         GetComponentInChildren<CollectLight>().OnCollectLight += AddLight;
         jointRigidbody = GetComponentInChildren<FixedJoint>().GetComponent<Rigidbody>();
         orbMaterial = OrbPrefab.GetComponent<Renderer>().sharedMaterial;
+        skyboxMaterial = Camera.main.GetComponent<Skybox>().material;
+        skyboxNoise1Original = skyboxMaterial.GetColor("_Noise1");
+        skyboxNoise2Original = skyboxMaterial.GetColor("_Noise2");
     }
 
     void Update() {
@@ -55,7 +64,23 @@ public class Phototroph : MonoBehaviour {
     }
 
     public void UseOrb() {
-        var prevLight = Light;
         Light = Mathf.RoundToInt(Mathf.Pow(Orbs.Count - 1 + LightToOrbMin, LightToOrbRootBase));
+        StopAllCoroutines();
+        StartCoroutine(FlashSkybox(orbMaterial.GetColor("_EmissionColor"), FlashDuration));
+    }
+
+    IEnumerator FlashSkybox(Color color, float duration) {
+        var time = 0f;
+        while (time < duration) {
+            var t = Mathf.Sqrt(Mathf.Clamp01(time / duration));
+            var noise1Color = Color.Lerp(color, skyboxNoise1Original, Mathf.Lerp(0, 1, t));
+            var noise2Color = Color.Lerp(color, skyboxNoise2Original, Mathf.Lerp(0.5f, 1, t));
+            skyboxMaterial.SetColor("_Noise1", noise1Color);
+            skyboxMaterial.SetColor("_Noise2", noise2Color);
+            yield return new WaitForEndOfFrame();
+            time += Time.deltaTime;
+        }
+        skyboxMaterial.SetColor("_Noise1", skyboxNoise1Original);
+        skyboxMaterial.SetColor("_Noise2", skyboxNoise2Original);
     }
 }
