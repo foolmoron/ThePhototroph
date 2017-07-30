@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CollectLight : MonoBehaviour {
 
-    public List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>(100);
+    public event Action<int> OnCollectLight = delegate { };
+
+    List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>(100);
 
     void Start() {
     }
@@ -14,6 +17,6 @@ public class CollectLight : MonoBehaviour {
 
     void OnParticleCollision(GameObject other) {
         other.GetComponent<ParticleSystem>().GetCollisionEvents(other, collisionEvents);
-        Debug.Log(collisionEvents.Count);
+        OnCollectLight(collisionEvents.Count);
     }
 }

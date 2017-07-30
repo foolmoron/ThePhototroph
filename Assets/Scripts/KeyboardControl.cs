@@ -8,8 +8,11 @@ public class KeyboardControl : MonoBehaviour {
     public Rigidbody RigidbodyToUse;
     public float Acceleration = 5;
     public float MaxSpeed = 20;
-    public float JumpForce = 10;
+    public float BaseJumpForce = 10;
+    public float JumpGravityDisableTime = 1;
+    float gravityDisableTime;
 
+    Phototroph phototroph;
     GravityVulnerable gravityVulnerable;
     SphereCollider collider;
     
@@ -20,6 +23,7 @@ public class KeyboardControl : MonoBehaviour {
         if (!RigidbodyToUse) {
             RigidbodyToUse = GetComponent<Rigidbody>();
         }
+        phototroph = GetComponent<Phototroph>();
         gravityVulnerable = GetComponent<GravityVulnerable>();
         collider = GetComponent<SphereCollider>();
     }
@@ -35,9 +39,16 @@ public class KeyboardControl : MonoBehaviour {
         }
 
         // jump
-        var canJump = Physics.Raycast(transform.position, gravityVulnerable.CurrentDown, collider.radius * transform.lossyScale.x * 1.1f);
-        if (canJump && Input.GetButtonDown("Jump")) {
-            RigidbodyToUse.AddForce(-JumpForce * gravityVulnerable.CurrentDown, ForceMode.VelocityChange);
+        if (phototroph.Orbs.Count > 0 && Input.GetButtonDown("Jump")) {
+            RigidbodyToUse.AddForce(-BaseJumpForce * gravityVulnerable.CurrentDown, ForceMode.VelocityChange);
+            gravityDisableTime = JumpGravityDisableTime;
+            phototroph.UseOrb();
         }
+
+        // gravity disable
+        if (gravityDisableTime > 0) {
+            gravityDisableTime -= Time.deltaTime;
+        }
+        gravityVulnerable.GravityModifier = gravityDisableTime > 0 ? 0 : 1;
     }
 }
