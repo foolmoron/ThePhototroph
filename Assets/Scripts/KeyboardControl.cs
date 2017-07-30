@@ -35,7 +35,7 @@ public class KeyboardControl : MonoBehaviour {
         cameraEffects = GetComponentInChildren<CameraEffects>();
     }
 
-    void FixedUpdate() {
+    void Update() {
         // gravity dive start
         if (Input.GetButton("Jump")) {
             gravityDiveHoldTime += Time.deltaTime;
@@ -44,25 +44,10 @@ public class KeyboardControl : MonoBehaviour {
             }
         }
 
-        // movement force
-        if (IsDiving) {
-            //transform.rotation = Quaternion.Euler(new Vector3(1,2,3));
-            RigidbodyToUse.velocity = DiveSpeed * Mathf.Min(10, gravityDiveHoldTime - GravityDiveHoldTime) * gravityVulnerable.CurrentDown;
-        } else {
-            var inputDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
-            var right = DirectionalTransformToUse.right;
-            var forward = Vector3.Cross(gravityVulnerable.CurrentDown, right).normalized;
-            var direction = right * inputDirection.x + forward * inputDirection.y;
-            // TODO: clamp speed properly?
-            if (RigidbodyToUse.velocity.magnitude < MaxSpeed) {
-                RigidbodyToUse.AddForce(direction * Acceleration, ForceMode.Acceleration);
-            }
-        }
-
         // jump
         if (phototroph.Orbs.Count > 0 && Input.GetButtonUp("Jump") && !IsDiving) {
-            // TODO: cancel all momentum towards CurrentDown
-            RigidbodyToUse.AddForce(-BaseJumpForce * gravityVulnerable.CurrentDown, ForceMode.VelocityChange);
+            var currentDownVelocity = Vector3.Project(RigidbodyToUse.velocity, gravityVulnerable.CurrentDown);
+            RigidbodyToUse.AddForce(2*(-BaseJumpForce * gravityVulnerable.CurrentDown - currentDownVelocity), ForceMode.VelocityChange);
             gravityDisableTime = JumpGravityDisableTime;
             phototroph.UseOrb();
         }
@@ -81,6 +66,21 @@ public class KeyboardControl : MonoBehaviour {
 
         // camera effects intensity
         cameraEffects.Intensity = gravityDiveHoldTime / 4;
+    }
+
+    void FixedUpdate() {
+        // movement force
+        if (IsDiving) {
+            RigidbodyToUse.velocity = DiveSpeed * Mathf.Min(10, gravityDiveHoldTime - GravityDiveHoldTime) * gravityVulnerable.CurrentDown;
+        } else {
+            var inputDirection = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
+            var right = DirectionalTransformToUse.right;
+            var forward = Vector3.Cross(gravityVulnerable.CurrentDown, right).normalized;
+            var direction = right * inputDirection.x + forward * inputDirection.y;
+            if (RigidbodyToUse.velocity.magnitude < MaxSpeed) {
+                RigidbodyToUse.AddForce(direction * Acceleration, ForceMode.Acceleration);
+            }
+        }
     }
 
     void OnCollisionStay(Collision collision) {

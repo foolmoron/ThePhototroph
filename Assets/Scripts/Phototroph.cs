@@ -57,6 +57,5 @@ public class Phototroph : MonoBehaviour {
     public void UseOrb() {
         var prevLight = Light;
         Light = Mathf.RoundToInt(Mathf.Pow(Orbs.Count - 1 + LightToOrbMin, LightToOrbRootBase));
-        Debug.Log(prevLight + " -> " + Light);
     }
 }
