@@ -344,6 +344,7 @@ MonoBehaviour:
   GravityDiveHoldTime: 0.5
   DiveSpeed: 5
   IsDiving: 0
+  IsHolding: 0
   IsJumping: 0
   GravityMelodyDistanceMax: 50
   LandingMask:
@@ -368,7 +369,7 @@ MonoBehaviour:
   OrbPrefab: {fileID: 1420783373610636, guid: 955578d0dddee5d4d8f3654d17372e2a, type: 2}
   Light: 0
   LightToOrbRootBase: 4
-  LightToOrbMin: 3
+  LightToOrbMin: 2
   OrbHueBase: 0
   OrbHueStep: 0.16666667
   OrbSat: 0.65

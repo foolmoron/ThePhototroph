@@ -52,7 +52,7 @@ public class Phototroph : MonoBehaviour {
             Orbs.RemoveAt(0);
         }
         while (desiredOrbs > Orbs.Count) {
-            var orb = Instantiate(OrbPrefab);
+            var orb = Instantiate(OrbPrefab, transform.position, Quaternion.identity);
             orb.GetComponent<SpringJoint>().connectedBody = jointRigidbody;
             orb.GetComponentInChildren<CollectLight>().OnCollectLight += AddLight;
             Orbs.Add(orb);

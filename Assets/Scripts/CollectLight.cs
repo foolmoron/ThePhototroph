@@ -22,7 +22,8 @@ public class CollectLight : MonoBehaviour {
 
     void OnParticleCollision(GameObject other) {
         other.GetComponent<ParticleSystem>().GetCollisionEvents(other, collisionEvents);
-        OnCollectLight(collisionEvents.Count);
+        var boost = other.GetComponent<ParticleBoost>().Boost;
+        OnCollectLight(Mathf.FloorToInt(collisionEvents.Count * boost));
         if (frames <= 0) {
             AudioSource.PlayClipAtPoint(CollectSound, Vector3.zero);
             frames = FramesBetweenSound;

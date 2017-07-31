@@ -19,7 +19,7 @@ public class GravityVulnerable : MonoBehaviour {
 
     void FixedUpdate() {
         CurrentNearestGravityObject = null;
-        var nearestR2 = float.PositiveInfinity;
+        var strongestA = float.NegativeInfinity;
         foreach (var gravityObject in GravityObject.AllInCurrentScene) {
             // add gravity
             var vectorToGravity = gravityObject.transform.position - RigidbodyToUse.position;
@@ -30,9 +30,9 @@ public class GravityVulnerable : MonoBehaviour {
             RigidbodyToUse.AddForce(a * radiusScale * dir, ForceMode.Acceleration);
 
             // check for nearest object
-            if (r2 < nearestR2) {
+            if (a > strongestA) {
                 CurrentNearestGravityObject = gravityObject;
-                nearestR2 = r2;
+                strongestA = a;
             }
         }
         if (CurrentNearestGravityObject != null) {

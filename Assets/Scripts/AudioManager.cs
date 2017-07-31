@@ -10,7 +10,7 @@ public class AudioPack {
     [Range(0, 1)]
     public float MasterVolume = 1;
     public int Current;
-    public int Previous;
+    public int Previous = -1;
     public AudioSource[] Audios;
     public float[] Volumes;
 }
