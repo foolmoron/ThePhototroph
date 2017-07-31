@@ -34,7 +34,7 @@ public class CameraEffects : MonoBehaviour {
         ppb.profile.vignette.settings = ppbSettings;
         
         var ppbSettings2 = ppb.profile.motionBlur.settings;
-        ppbSettings2.frameBlending = Mathf.Lerp(0.17f, 0.5f, RealIntensity);
+        ppbSettings2.shutterAngle = Mathf.Lerp(30f, 270f, RealIntensity);
         ppb.profile.motionBlur.settings = ppbSettings2;
 
         shaker.Shaking = RealIntensity > 0;
